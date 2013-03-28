@@ -1089,10 +1089,35 @@ config VERY_EARLY_CONSOLE
 		effect, the driver must support this and the consoles should
 		be initialized in the board file as soon as possible.
 
+if MACH_HTCLEO
+choice
+	prompt "HTCLEO Touchscreen driver type"
+	default HTCLEO_COTULLA_TS
+	
+	config HTCLEO_COTULLA_TS
+	bool "Use Cotulla's touchscreen driver"
+
+	config HTCLEO_BIGSLEY_TS
+	bool "Use Bigsley's touchscreen driver"
+endchoice
+endif
+
+choice
+	prompt "Bigsley: Touchscreen driver mode"
+	default HTCLEO_BIGSLEY_TS_ABS
+	depends on HTCLEO_BIGSLEY_TS	
+
+	config HTCLEO_BIGSLEY_TS_ABS
+	bool "Absolute"
+
+	config HTCLEO_BIGSLEY_TS_REL
+	bool "Relative (like touchpad)
+endchoice
+
 config HTCLEO_ENABLE_MULTI_TOUCH
 	bool "Support for multitouch"
 	default y
-	depends on MACH_HTCLEO
+	depends on HTCLEO_COTULLA_TS
 	help
 		Add multitouch support for touchscreen
 

@@ -1,5 +1,6 @@
 /* linux/sound/htcleo/alsa-mix-htc-leo.c
  *
+ * Copyright (c) 2013, Bigsley
  * Copyright (c) 2011 Cotulla
  * Copyright (c) 2009, Code Aurora Forum. All rights reserved.
  *
@@ -40,7 +41,9 @@
 
 #include "alsa-htc-leo.h"
 
-int q6audio_set_tx_volume(int level);
+//#include "../../../arch/arm/mach-msm/qdsp6_1550/q6audio.h"
+
+//int q6audio_set_tx_volume(int level);
 
 #if 1
 
@@ -201,21 +204,21 @@ static int update_routing(int device)
 // CotullaTODO: finish this part
     switch (device)
     {
-    case AP_ROUTER_DEVICE:
+    case AP_ROUTER_DEVICE: //Handset speaker and mic
         dev_rx_id = ADSP_AUDIO_DEVICE_ID_HANDSET_MIC;
         dev_tx_id = ADSP_AUDIO_DEVICE_ID_HANDSET_SPKR;
         acdb_tx_id = ACDB_ID_SPKR_PLAYBACK;
         acdb_rx_id = ACDB_ID_INT_MIC_REC;
     break;
 
-    case AP_ROUTER_DEVICE_LOUD:
+    case AP_ROUTER_DEVICE_LOUD: //Loudspeaker and handset mic
         dev_tx_id = ADSP_AUDIO_DEVICE_ID_SPKR_PHONE_MONO;
         acdb_tx_id = ACDB_ID_SPKR_PLAYBACK;
         dev_rx_id = ADSP_AUDIO_DEVICE_ID_HANDSET_MIC;
         acdb_rx_id = ACDB_ID_INT_MIC_REC;
     break;
 
-    case AP_ROUTER_HEADSET:
+    case AP_ROUTER_HEADSET: //Headset speaker and mic
         dev_rx_id = ADSP_AUDIO_DEVICE_ID_HEADSET_MIC;
         dev_tx_id = ADSP_AUDIO_DEVICE_ID_HEADSET_SPKR_STEREO;
         acdb_tx_id = ACDB_ID_HEADSET_PLAYBACK;
@@ -272,12 +275,12 @@ static int snd_qsd_route_put(struct snd_kcontrol *kcontrol, struct snd_ctl_elem_
 
 
 
-static int snd_rx_vol_put(struct snd_kcontrol *kcontrol, struct snd_ctl_elem_value *ucontrol)
+static int snd_rx_vol_put(struct snd_kcontrol *kcontrol, struct snd_ctl_elem_value *ucontrol) //mic vol
 {
     int rc = 0;
     int val;
 
-    DBG("%d", ucontrol->value.integer.value[0]);
+    DBG("%d", (int)ucontrol->value.integer.value[0]);
 
     val = ucontrol->value.integer.value[0];
     if (val < 0 || val > 100)
@@ -295,12 +298,12 @@ static int snd_rx_vol_put(struct snd_kcontrol *kcontrol, struct snd_ctl_elem_val
 }
 
 
-static int snd_tx_vol_put(struct snd_kcontrol *kcontrol, struct snd_ctl_elem_value *ucontrol)
+static int snd_tx_vol_put(struct snd_kcontrol *kcontrol, struct snd_ctl_elem_value *ucontrol) //headphone/headset/speaker volume
 {
     int rc = 0;
     int val;
 
-    DBG("%d", ucontrol->value.integer.value[0]);    
+    DBG("%d", (int)ucontrol->value.integer.value[0]);    
 
     val = ucontrol->value.integer.value[0];
     if (val < 0 || val > 100)
@@ -323,7 +326,7 @@ static int snd_tx_mute_put(struct snd_kcontrol *kcontrol, struct snd_ctl_elem_va
     int rc = 0;
     int mute;
 
-    DBG("%d", ucontrol->value.integer.value[0]);
+    DBG("%d", (int)ucontrol->value.integer.value[0]);
 
     mute = ucontrol->value.integer.value[0] ? 1 : 0;
     rc = q6audio_set_tx_mute(mute);   
@@ -341,7 +344,7 @@ static int snd_rx_mute_put(struct snd_kcontrol *kcontrol, struct snd_ctl_elem_va
     int rc = 0;
     int mute;
 
-    DBG("%d", ucontrol->value.integer.value[0]);
+    DBG("%d", (int)ucontrol->value.integer.value[0]);
 
     mute = ucontrol->value.integer.value[0] ? 1 : 0;
     rc = q6audio_set_rx_mute(mute);

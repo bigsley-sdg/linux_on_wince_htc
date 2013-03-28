@@ -57,7 +57,12 @@
 #include <mach/board-htcleo-microp.h>
 
 #include "board-htcleo.h"
-#include "board-htcleo-ts.h"
+#ifdef CONFIG_HTCLEO_COTULLA_TS
+#include "board-htcleo-cotulla-ts.h"
+#endif
+#ifdef CONFIG_HTCLEO_BIGSLEY_TS
+#include "board-htcleo-bigsley-ts.h"
+#endif
 #include "devices.h"
 #include "proc_comm.h"
 #include "dex_comm.h"

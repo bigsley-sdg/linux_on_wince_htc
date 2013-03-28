@@ -21,7 +21,7 @@
 #ifndef _MSM_PCM_H
 #define _MSM_PCM_H
 
-
+#include "../../../arch/arm/mach-msm/qdsp6_1550/q6audio.h"
 
 #if defined(CONFIG_MACH_HTCLEO)
 
